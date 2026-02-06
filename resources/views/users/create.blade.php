@@ -1,0 +1,104 @@
+@extends('layouts.app')
+
+@section('content')
+
+
+  
+
+<form method="POST" action="{{ route('users.store') }}">
+    @csrf
+    <div class="container-xxl">
+      <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner py-4">
+          <!-- Login -->
+          <div class="card border">
+            <div class="card-body">
+
+<div class="row g-3">
+                          <div class="col-md-6">
+                            <label class="form-label" for="name">الأسم  </label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="الأسم" />
+                          </div>
+                          <div class="col-md-6">
+                            <label class="form-label" for="mobile_no">الجوال   </label>
+                            <input type="text" id="mobile_no" name="mobile_no" class="form-control" placeholder="رقم الواتس" />
+                          </div>
+
+
+
+
+                          <div class="col-md-6">
+                            <label class="form-label" for="email"> البريد الإلكتروني  </label>
+                            <div class="input-group input-group-merge">
+                              <input type="email" id="email"  name="email" class="form-control" placeholder="mglava"
+                                aria-label="john.doe" aria-describedby="email2" />
+                              <span class="input-group-text" id="email2">@example.com</span>
+                            </div>
+                          </div>
+
+                             <div class="col-md-6">
+                             <label class="form-label" for="is_admin">  هل المستخدم مدير    </label>
+
+                            <div class="form-check form-switch mb-2">
+                              <label class="switch">
+                          <input name="is_admin" value="1" type="checkbox" id="is_admin" class="switch-input">
+                          <span class="switch-toggle-slider">
+                            <span class="switch-on">
+                              <i class="ti ti-check"></i>
+                            </span>
+                            <span class="switch-off">
+                              <i class="ti ti-x"></i>
+                            </span>
+                          </span>
+                          <span class="switch-label"> مدير </span>
+                        </label>
+                            </div>
+
+
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-password-toggle">
+                              <label class="form-label" for="password">كلمة مرور</label>
+                              <div class="input-group input-group-merge">
+                                <input type="password" id="password" name="password" class="form-control"
+                                  placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                  aria-describedby="-password2" />
+                                <span class="input-group-text cursor-pointer" id="-password2"><i
+                                    class="ti ti-eye-off"></i></span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-password-toggle">
+                              <label class="form-label" for="-confirm-password">تاكيد كلمة المرور </label>
+                              <div class="input-group input-group-merge">
+                                <input type="password" id="confirm-password" name="confirm-password" class="form-control"
+                                  placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                  aria-describedby="-confirm-password2" />
+                                <span class="input-group-text cursor-pointer" id="confirm-password2"><i
+                                    class="ti ti-eye-off"></i></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+    <div class="mb-3">
+
+
+        <div class="col-md-6 text-center">
+            <button type="submit" class="btn btn-primary me-sm-3 me-1 waves-effect waves-light"> حفظ &nbsp;  <i class="fa-solid fa-floppy-disk"></i> </button>
+            <button type="reset"
+                                        class="btn btn-warning me-sm-3 me-1 waves-effect waves-light">تراجع 
+                                          </button>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</form>
+
+
+@endsection

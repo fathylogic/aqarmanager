@@ -1,0 +1,390 @@
+@page {
+    margin: 0
+}
+
+@font-face {
+    font-family: KhalidArt;
+    src: url(/assets/vendor/fonts/khalid-art-bold.ttf);
+}
+
+@font-face {
+    font-family: "saudi_riyal";
+    src: url("/assets/vendor/fonts/saudi_riyal/regular/saudi_riyal.woff2") format("woff2"),
+    url("/assets/vendor/fonts/saudi_riyal/regular/saudi_riyal.woff") format("woff"),
+    url("/assets/vendor/fonts/saudi_riyal/regular/saudi_riyal.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "saudi_riyal_bold";
+    src: url("/assets/vendor/fonts/saudi_riyal/bold/saudi_riyal.woff2") format("woff2"),
+    url("/assets/vendor/fonts/saudi_riyal/bold/saudi_riyal.woff") format("woff"),
+    url("/assets/vendor/fonts/saudi_riyal/bold/saudi_riyal.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+* {
+    -webkit-print-color-adjust: exact;
+}
+
+body {
+    margin: 0
+}
+
+.sheet {
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    page-break-after: always;
+    direction: rtl;
+    font-family: KhalidArt;
+}
+
+/** Paper sizes **/
+body.A3 .sheet {
+    width: 297mm;
+    height: 419mm
+}
+
+body.A3.landscape .sheet {
+    width: 420mm;
+    height: 296mm
+}
+
+body.A4 .sheet {
+    width: 210mm;
+    height: 296mm
+}
+
+body.A4.landscape .sheet {
+    width: 297mm;
+    height: 209mm
+}
+
+body.A5 .sheet {
+    width: 148mm;
+    height: 209mm
+}
+
+body.A5.landscape .sheet {
+    width: 210mm;
+    height: 147mm
+}
+
+body.letter .sheet {
+    width: 216mm;
+    height: 279mm
+}
+
+body.letter.landscape .sheet {
+    width: 280mm;
+    height: 215mm
+}
+
+body.legal .sheet {
+    width: 216mm;
+    height: 356mm
+}
+
+body.legal.landscape .sheet {
+    width: 357mm;
+    height: 215mm
+}
+
+/** Padding area **/
+.sheet.padding-5mm {
+    padding: 5mm
+}
+
+.sheet.padding-10mm {
+    padding: 10mm
+}
+
+.sheet.padding-15mm {
+    padding: 15mm
+}
+
+.sheet.padding-20mm {
+    padding: 20mm
+}
+
+.sheet.padding-25mm {
+    padding: 25mm
+}
+
+
+/* Ensure the icon class correctly loads the Riyal symbol */
+.icon-saudi_riyal::before {
+    content: "\e900";
+    font-family: "saudi_riyal" !important;
+    font-size: inherit;
+    color: inherit;
+}
+
+.icon-saudi_riyal_bold::before {
+    content: "\e900";
+    font-family: "saudi_riyal_bold" !important;
+    font-size: inherit;
+    color: inherit;
+}
+
+.icon-saudi_riyal_new::after {
+    content: "\20c1";
+    font-family: "saudi_riyal" !important;
+    font-size: inherit;
+    color: inherit;
+}
+
+.icon-saudi_riyal_bold_new::after {
+    content: "\20c1";
+    font-family: "saudi_riyal_bold" !important;
+    font-size: inherit;
+    color: inherit;
+}
+
+
+.controls-container {
+    color: #414142;
+    background: #f1f1f2;
+    padding: 5px;
+    border: 1px solid #d1d3d4;
+    border-radius: 2px;
+    position: fixed;
+    top: 50px;
+    left: 10px;
+    z-index: 9;
+}
+
+.controls-container button {
+    background: #333;
+    border: none;
+    color: #fff;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    outline: none;
+    cursor: pointer;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.controls-container button:hover {
+    background-color: #4caf50
+}
+
+body.A5.landscape .sheet .all_paper {
+    border: 2px solid #f77c7c;
+    border-radius: 3px;
+    padding: 10px;
+    width: 193.5mm;
+    height: 130mm;
+    background-image: url(/assets/img/branding/logo_bg.png);
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.paper_header {
+    float: right;
+    width: 100%;
+}
+
+.paper_title {
+    border: 2px solid #96beed;
+    float: right;
+    border-radius: 7px;
+    padding: 10px 17px;
+    font-size: 20px;
+    background-color: #9adc2c69;
+    margin-right: 30mm;
+}
+
+.payment_number {
+    border: 2px solid #e46f6f;
+    border-radius: 7px;
+    padding: 10px 17px;
+    font-size: 20px;
+    color: #db4444;
+    float: left;
+}
+
+.payment_date {
+    float: right;
+    width: 100%;
+    padding-top: 2mm;
+}
+
+.hijri_date {
+    border: 2px solid #39393a;
+    float: right;
+    border-radius: 7px;
+    padding: 7px 13px;
+    font-size: 17px;
+    background-color: #e7e7e7;
+}
+
+.payment_name {
+    border: 2px solid #e47070;
+    padding: 4px 13px;
+    outline: 2px solid #e47070;
+    outline-offset: 3px;
+    margin: 4px auto 0px auto;
+    position: absolute;
+    right: 1px;
+    left: 1px;
+    width: fit-content;
+    background-color: #ffffffbf;
+}
+
+.gorg_date {
+    border: 2px solid #39393a;
+    float: left;
+    border-radius: 7px;
+    padding: 7px 13px;
+    font-size: 17px;
+    background-color: #e7e7e7;
+    direction: ltr;
+}
+
+.payment_amount {
+    float: right;
+    width: 100%;
+    padding-top: 2mm;
+}
+
+.payment_amountH {
+    border: 2px solid #af7474;
+    float: right;
+    padding: 0px 40px;
+    font-size: 17px;
+    margin-right: 5mm;
+    box-shadow: 2px 4px 4px #000000ad;
+}
+
+.payer {
+    float: right;
+    width: 100%;
+    padding-top: 5mm;
+    font-size: 20px;
+}
+
+.payer_name_title {
+    padding: 0px 6px;
+    float: right;
+}
+
+.payer_name {
+    float: right;
+    color: blue;
+    padding: 0px 6px;
+    background-color: #ffffff87;
+}
+
+.payment_amount_text {
+    float: right;
+    width: 100%;
+    padding-top: 5mm;
+}
+
+.payment_amount_text_title {
+    float: right;
+    font-size: 17px;
+    padding: 8px 4px;
+}
+
+.payment_amount_text_ {
+    float: right;
+    border: 1px solid #000;
+    padding: 8px 4px;
+    color: red;
+    margin: 0px 3px;
+    font-size: 18px;
+    width: 169mm;
+    text-align: center;
+    box-shadow: 5px 0px 5px #00000080, -5px 0px 5px #00000080;
+    background-color: #ffffff87;
+}
+
+.payment_about {
+    float: right;
+    width: 100%;
+    padding-top: 4mm;
+    font-size: 18px;
+}
+
+.payment_about_title {
+    float: right;
+    padding: 0px 2px 0px 10px;
+}
+
+.payment_about_text {
+    float: right;
+    color: blue;
+}
+
+.payment_signature {
+    float: right;
+    width: 100%;
+    padding-top: 3mm;
+    font-size: 16px;
+}
+
+.signature_text {
+    float: left;
+    padding: 0px 62px;
+}
+
+/** For screen preview **/
+@media screen {
+    body {
+        background: #e0e0e0
+    }
+
+    .sheet {
+        background: white;
+        box-shadow: 0 .5mm 2mm rgba(0, 0, 0, .3);
+        margin: 5mm auto;
+    }
+}
+
+/** Fix for Chrome issue #273306 **/
+@media print {
+    body.A3.landscape {
+        width: 420mm
+    }
+
+    body.A3, body.A4.landscape {
+        width: 297mm
+    }
+
+    body.A4, body.A5.landscape {
+        width: 210mm
+    }
+
+    body.A5 {
+        width: 148mm
+    }
+
+    body.letter, body.legal {
+        width: 216mm
+    }
+
+    body.letter.landscape {
+        width: 280mm
+    }
+
+    body.legal.landscape {
+        width: 357mm
+    }
+
+    .controls-container {
+        display: none;
+    }
+}

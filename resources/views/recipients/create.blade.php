@@ -1,0 +1,126 @@
+@extends('layouts.app')
+
+@section('content')
+   
+
+    @if (count($errors) > 0)
+        <div class="alert alert-danger">
+            <strong>Whoops!</strong> يوجد خطأ في بيانات الادخال.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form method="POST" action="{{ route('recipients.store') }}" enctype="multipart/form-data">
+        @csrf
+        <div class="container-xxl">
+            <div class="authentication-wrapper authentication-basic container-p-y">
+                <div class="authentication-inner py-4">
+                    <!-- Login -->
+                    <div class="card border">
+                        <div class="card-body">
+
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label" for="name">اسم المستفيد <i class="fa fa-asterisk "
+                                            style="color: red" aria-hidden="true"></i></label>
+                                    <input type="text" id="name" name="name" class="form-control" required />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label" for="r_type">   نوع المستفيد <i class="fa fa-asterisk "
+                                            style="color: red" aria-hidden="true"></i></label>
+                                    <input type="text" id="r_type" name="r_type" required class="form-control" />
+                                </div>
+
+                                 <div class="col-md-4">
+                                    <label class="form-label" for="id_type"> نوع الهوية <i class="fa fa-asterisk "
+                                            style="color: red" aria-hidden="true"></i></label>
+
+                                    <select id="id_type" name="id_type" class="select2 form-select"
+                                        data-allow-clear="true">
+                                        <option value="">اختر </option>
+                                        @foreach ($id_types as $row)
+                                            <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                        @endforeach
+
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label" for="id_no"> رقم الهوية <i class="fa fa-asterisk "
+                                            style="color: red" aria-hidden="true"></i></label>
+                                    <input type="text" id="id_no" name="id_no"  class="form-control" />
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label" for="nationality"> الجنسية <i class="fa fa-asterisk "
+                                            style="color: red" aria-hidden="true"></i></label>
+                                     <select id="nationality" required name="nationality" class="select2 form-select"
+                                        data-allow-clear="true">
+                                        <option value="">اختر </option>
+                                        @foreach ($nationalities as $row)
+                                            <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label" for="r_address"> العنوان <i class="fa fa-asterisk "
+                                            style="color: red" aria-hidden="true"></i></label>
+                                    <input type="text" id="r_address" name="r_address" 
+                                        class="form-control" />
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label" for="mobile_no"> رقم الجوال <i
+                                            class="fa fa-asterisk " style="color: red" aria-hidden="true"></i></label>
+                                    <input type="text" id="mobile_no"  name="mobile_no" class="form-control" />
+                                </div>
+                                 <div class="col-md-4">
+                                    <label class="form-label" for="other_no	"> رقم اخر للتواصل  </label>
+                                    <input type="text" id="other_no" name="other_no" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label" for="iban"> الحساب البنكي (IBAN) </label>
+                                   
+                                      <div class="input-group mb-3" dir="ltr">
+                                        <span class="input-group-text" id="iban">SA</span>
+                                        <input type="text"   class="form-control" id="iban" dir="ltr"
+                                            name="iban" onkeypress="return onlyNumbers(event)" onkeyup="return numberValidation(event)" aria-describedby="iban">
+                                    </div>
+                                   
+                                </div>
+
+
+
+                                <div class="col-md-4">
+                                    <label for="file" class="form-label"> صورة مستند</label>
+                                    <input type="file" name="file" id="file" class="form-control">
+
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <label class="form-label" for="notes"> ملاحظات </label>
+                                    <textarea id="notes" name="notes" class="form-control"></textarea>
+                                </div>
+
+                            </div>
+
+
+                               <div class="pt-4">
+                          <button type="submit" class="btn btn-primary me-sm-3 me-1 waves-effect waves-light"><i class="fa-solid fa-floppy-disk pe-2"></i> حفظ</button>
+                          <a class="btn btn-label-secondary waves-effect" href="{{ route('recipients.index') }}"><i class="fa-solid fa-xmark pe-2"></i> الغاء</a>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <p class="text-recipient text-primary"><small> </small></p>
+@endsection

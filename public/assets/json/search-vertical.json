@@ -1,0 +1,104 @@
+{
+  "pages": [
+    {
+      "name": "المراكز الرئيسية",
+      "icon": "ti-smart-home",
+      "url": "./maincenters"
+    },
+    {
+        "name": "إضافة مركزرئيسي",
+        "icon": "ti-smart-home",
+        "url": "./maincenters/create"
+      },
+    {
+      "name": "الوحدات الربحية",
+      "icon": "ti-smart-home",
+      "url": "./units"
+    },
+    {
+        "name": "إضافة الوحدات الربحية",
+        "icon": "ti-smart-home",
+        "url": "./units/create"
+      },
+    {
+      "name": "الموظفين",
+      "icon": "ti-smart-home",
+      "url": "./employees"
+    },
+    {
+        "name": "إضافة الموظفين",
+        "icon": "ti-smart-home",
+        "url": "./employees/create"
+      },
+    {
+      "name": "المستأجرين",
+      "icon": "ti-layout-sidebar",
+      "url": "./renters"
+    },
+    {
+      "name": "المصروفات",
+      "icon": "ti-layout-sidebar",
+      "url": "./sarfs"
+    },
+    {
+      "name": "رواتب الموظفين",
+      "icon": "ti-layout-sidebar",
+      "url": "./payrolls"
+    },
+    {
+      "name": "الايرادات",
+      "icon": "ti-layout-sidebar",
+      "url": "./payments"
+    },
+    {
+      "name": "تقارير",
+      "icon": "ti-layout-sidebar",
+      "url": "#"
+    },
+    {
+      "name": "إدارة المستخدمين",
+      "icon": "ti-layout-sidebar",
+      "url": "./users"
+    },
+    {
+      "name": "إدارة المستفيدين",
+      "icon": "ti-layout-sidebar",
+      "url": "./recipients"
+    },
+    {
+      "name": "إنشاء مستفيد جديد",
+      "icon": "ti-map-pin",
+      "url": "./recipients/create"
+    }
+  ],
+  "files": [
+    {
+      "name": "Class Attendance",
+      "subtitle": "By Tommy Shelby",
+      "src": "img/icons/misc/search-xls.png",
+      "meta": "17kb",
+      "url": "app-file-manager.html"
+    },
+    {
+      "name": "Gardening Guide",
+      "subtitle": "By Jerry Seinfeld",
+      "src": "img/icons/misc/search-doc.png",
+      "meta": "25kb",
+      "url": "app-file-manager.html"
+    }
+  ],
+  "members": [
+    {
+      "name": "فتحي ",
+      "subtitle": "Admin",
+      "src": "img/avatars/1.png",
+      "url": "app-user-view-account.html"
+    },
+    {
+      "name": "Mark Shepiro",
+      "subtitle": "Admin",
+      "src": "img/avatars/12.png",
+      "url": "app-user-view-account.html"
+    }
+  ]
+}
