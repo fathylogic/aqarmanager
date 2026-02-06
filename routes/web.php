@@ -25,9 +25,16 @@ use App\Http\Controllers\ContractController;
 use App\Models\All_file;
 use App\Http\Controllers\TestEmailController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\TodoController;
 
 
 Auth::routes();
+Route::resource('todos', TodoController::class);
+
+Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
+Route::post('/todos', [TodoController::class, 'store'])->name('todos.store');
+Route::patch('/todos/{todo}', [TodoController::class, 'update'])->name('todos.update');
+Route::delete('/todos/{todo}', [TodoController::class, 'destroy'])->name('todos.destroy');
 
 Route::get('send-whatsapp', [WhatsappController::class, 'index']);
 Route::post('send-whatsapp', [WhatsappController::class, 'sendWhatsappMessage'])->name('send.whatsapp');
@@ -45,7 +52,6 @@ Route::get('contracts', [ContractController::class, 'index'])->name('contracts.i
 Route::post('contracts/store', [ContractController::class, 'store'])->name('contracts.store');
 Route::get('contracts/contract_arch', [ContractController::class, 'contract_arch'])->name('contracts.contract_arch');
 Route::get('contracts/show/{id}', [ContractController::class, 'show'])->name('contracts.show');
-Route::get('contracts/check_e_no/{e_no}', [ContractController::class, 'check_e_no'])->name('contracts.check_e_no');
 Route::post('contracts/show/{id}', [ContractController::class, 'show']);
 Route::get('contracts/edit/{id}', [ContractController::class, 'edit'])->name('contracts.edit');
 Route::post('contracts/edit/{id}', [ContractController::class, 'edit']);

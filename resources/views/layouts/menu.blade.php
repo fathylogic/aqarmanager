@@ -173,6 +173,14 @@
 
             </ul>
         </li>
+        @if ($current_user->id==6 ||$current_user->id==7)
+            <li class="menu-item">
+                <a href="{{route('todos.index')}}" class="menu-link">
+                    <i class="menu-ico fa-solid fa-file-export"></i>
+                    <div data-i18n="المهام ">   المهام  </div>
+                </a>
+            </li>
+        @endif
         @if ($current_user->is_admin)
             <li class="menu-item  ">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">

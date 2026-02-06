@@ -16,18 +16,18 @@ class TodoController extends Controller
     }
     public function index()
     {
-       if(Auth::user()->id==6 || Auth::user()->id==7) {
-           $current_user = User::find(Auth::user()->id);
-           $todos = Todo::orderBy('is_done')
-               ->orderBy('due_date')
-               ->latest()
-               ->get();
+        if(Auth::user()->id==6 || Auth::user()->id==7) {
+            $current_user = User::find(Auth::user()->id);
+            $todos = Todo::orderBy('is_done')
+                ->orderBy('due_date')
+                ->latest()
+                ->get();
 
-           return view('todos.index', compact('todos', 'current_user'));
-       }
-       else{
-           return redirect()->back();
-       }
+            return view('todos.index', compact('todos', 'current_user'));
+        }
+        else{
+            return redirect()->back();
+        }
     }
 
     public function store(Request $request)
@@ -42,14 +42,27 @@ class TodoController extends Controller
         return redirect()->back()->with('success', 'تمت الإضافة');
     }
 
-    public function update(Todo $todo)
+
+    public function update(Request $request, Todo $todo)
     {
-        $todo->update([
-            'is_done' => !$todo->is_done
+        if ($request->has('toggle_status')) {
+            $todo->update([
+                'is_done' => !$todo->is_done
+            ]);
+            return back();
+        }
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'due_date' => 'nullable|date',
         ]);
 
-        return redirect()->back();
+        $todo->update($request->only('title', 'due_date'));
+
+        return back();
     }
+
+
 
     public function destroy(Todo $todo)
     {
