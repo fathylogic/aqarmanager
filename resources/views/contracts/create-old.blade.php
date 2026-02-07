@@ -141,13 +141,13 @@
                                     name_g="start_date"
                                     name_h="start_dateh"
                                     start_g=""
-                                    col="4"
+                                    col="6"
                                     label="بداية العقد"
                                 />
 
 
 
-                                <div class="col-md-4  ">
+                                <div class="col-md-6  ">
 
 
                                     <div class="row g-2">
@@ -205,48 +205,19 @@
                                     name_g="end_date"
                                     name_h="end_dateh"
                                     start_g=""
-                                    col="4"
+                                    col="6"
                                     label="نهاية العقد"
                                 />
 
 
-                                <div class="col-md-3">
-                                    <label class="form-label" for="no_of_payments">عدد الدفعات في السنة الواحدة <i
-                                            class="fa fa-asterisk "
-                                            style="color: red" aria-hidden="true"></i></label>
-                                    <input type="text" autocomplete="off" onkeypress="return onlyNumbers(event)"
-                                           onkeyup="return numberValidation(event)" id="no_of_payments"
-                                           name="no_of_payments" onfocus="calculateDiff();"
-                                           class="form-control" required/>
-                                </div>
 
                                 <div class="col-md-3">
-                                    <label class="form-label" for="single_payment_amount">قيمة مبلغ الدفعة الدورية <i
-                                            class="fa fa-asterisk "
-                                            style="color: red" aria-hidden="true"></i></label>
-                                    <input type="text" autocomplete="off"  onkeypress="return onlyNumbers(event)"
-                                           onkeyup="return numberValidation(event)" id="single_payment_amount"
-                                           name="single_payment_amount" onchange="calculatTotalYearAmount();"
-                                           class="form-control" required/>
-                                </div>
-
-
-                                <div class="col-md-3">
-                                    <label class="form-label" for="year_amount"> قيمة مبلغ الإيجار السنوي <i
+                                    <label class="form-label" for="year_amount"> قيمة دفعة الإيجار السنوي <i
                                             class="fa fa-asterisk "
                                             style="color: red" aria-hidden="true"></i></label>
                                     <input type="text" autocomplete="off" onkeypress="return onlyNumbers(event)"
                                            onkeyup="return numberValidation(event)" onfocus="calculateDiff();"
                                            id="year_amount" name="year_amount"
-                                           class="form-control" required/>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label" for="no_of_all_payments">عدد جميع الدفعات الايجارية <i
-                                            class="fa fa-asterisk "
-                                            style="color: red" aria-hidden="true"></i></label>
-                                    <input type="text" autocomplete="off" onkeypress="return onlyNumbers(event)"
-                                           onkeyup="return numberValidation(event)" id="no_of_all_payments"
-                                           name="no_of_all_payments" onchange="calculatTotalAmount();"
                                            class="form-control" required/>
                                 </div>
                                 <div class="col-md-3">
@@ -276,8 +247,24 @@
                                         </span>
                                 </div>
 
-
-
+                                <div class="col-md-3">
+                                    <label class="form-label" for="no_of_payments">عدد الدفعات في السنة الواحدة <i
+                                            class="fa fa-asterisk "
+                                            style="color: red" aria-hidden="true"></i></label>
+                                    <input type="text" autocomplete="off" onkeypress="return onlyNumbers(event)"
+                                           onkeyup="return numberValidation(event)" id="no_of_payments"
+                                           name="no_of_payments"
+                                           class="form-control" required/>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label" for="no_of_all_payments">عدد جميع الدفعات الايجارية <i
+                                            class="fa fa-asterisk "
+                                            style="color: red" aria-hidden="true"></i></label>
+                                    <input type="text" autocomplete="off" onkeypress="return onlyNumbers(event)"
+                                           onkeyup="return numberValidation(event)" id="no_of_all_payments"
+                                           name="no_of_all_payments"
+                                           class="form-control" required/>
+                                </div>
 
                                 <div class="card mt-3">
                                     <div class="card-header bg-light">
@@ -466,28 +453,7 @@
 
     <script>
 
-function calculatTotalYearAmount()
-{
-    let singlePaymentAmount = $('#single_payment_amount').val() ;
-    let noOfPayments = $('#no_of_payments').val() ;
-    if(singlePaymentAmount > 0 && noOfPayments > 0)
-    {
-        let totalAmount = parseFloat(singlePaymentAmount) * parseFloat(noOfPayments) ;
-        $('#year_amount').val(totalAmount) ;
-    }
-}
 
-function calculatTotalAmount()
-{
-    let singlePaymentAmount = $('#single_payment_amount').val() ;
-    let noOfPayments = $('#no_of_all_payments').val() ;
-    if(singlePaymentAmount > 0 && noOfPayments > 0)
-    {
-        let totalAmount = parseFloat(singlePaymentAmount) * parseFloat(noOfPayments) ;
-        $('#total_amount').val(totalAmount) ;
-    }
-
-}
 
         function generatePayments() {
 
@@ -607,12 +573,12 @@ function calculatTotalAmount()
                 extraAddTotal += waterYear * years ;
             }
 
-//console.log(extraAddTotal , total_amount ) ;
+console.log(extraAddTotal , total_amount ) ;
              total_amount +=  extraAddTotal ;
             $('#total_amount').val(total_amount) ;
 
             const daysBetweenPayments = Math.floor(365 / noOfPayments);
-            const singlePaymentAmount = parseFloat(document.getElementById('single_payment_amount').value) || 0;
+            const singlePaymentAmount = (yearAmount / noOfPayments);
             const dayAmount = (yearAmount / 365);
             const totalAmount = total_amount;
 

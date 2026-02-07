@@ -168,6 +168,58 @@
                                         </div>
 
 
+                                        <div class="col-md-12">
+                                <span>
+                            <a class="btn btn-sm btn-warning" href="javascript:void(0);"
+                               onclick="fn_add_files_row('file_attach'); return false ; ">
+                                + اضافة مرفق </a>
+                        </span>
+                                            <br><br>
+                                        </div>
+
+
+
+                                            <table class="table  display responsive nowrap">
+                                                <thead>
+                                                <tr>
+                                                    <th>عنوان الملف </th>
+                                                    <th> الملف </th>
+                                                    <th> اجراءات </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="file_attach">
+                                                @if (!empty($files))
+                                                    @foreach ($files as $file)
+                                                        <tr id="tfile{{ $file->id }}">
+                                                            <td>{{ $file->title }}</td>
+                                                            <td>
+                                                                <i class="ti ti-file"></i>
+                                                                <span class="align-middle ms-1">
+                                                        <a href="<?= asset('storage/' . $file->url) ?>" target="_blank">
+                                                            عرض الملف </a></span>
+
+                                                            </td>
+
+                                                            <td> <a href="#" onclick="fn_update_file({{ $file }})"
+                                                                    class="btn btn-sm btn-primary"><i
+                                                                        class="fa-regular fa-pen-to-square pe-2"></i> تعديل</a>
+                                                                <a href="#" onclick="fn_delete_file({{ $file->id }})"
+                                                                   class="btn btn-sm btn-danger delete-record"><i
+                                                                        class="fa-solid fa-trash-can pe-2"></i>
+                                                                    حذف</a>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+
+
+                                                </tbody>
+
+
+                                            </table>
+
+
+
 
 
                                     </div>
@@ -206,6 +258,15 @@
 
     <script>
 
+        function fn_add_files_row(div_id) {
+            var randomIndex = Math.floor(Math.random() * 9999);
+
+            var new_row =
+                '<tr id="tr_'+randomIndex+'"><td><input type="text"   name="title[]" class="form-control" required /></td><td><input type="file" name="files[]"   class="form-control"></td> <td> <a href="#" onclick="del_row('+randomIndex+') ; return false ; " class="btn btn-sm btn-danger delete-record"><i class="fa-solid fa-trash-can pe-2"></i> حذف</a></td></tr>';
+            $('#' + div_id).append(new_row);
+
+
+        }
 
         function fn_get_units(id)
         {

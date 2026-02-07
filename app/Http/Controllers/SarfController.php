@@ -38,6 +38,8 @@ use App\Models\Sarf;
 use AliAbdalla\Tafqeet\Core\Tafqeet;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use App\Models\All_file;
+use Illuminate\Http\UploadedFile;
+
 
 
 
@@ -234,7 +236,25 @@ class SarfController extends Controller
             $input['img'] = $img;
 
         if ($sarf =  Sarf::create($input)) {
-            // dd($sarf) ;
+
+            $uploadedFiles = $request->file('files', []);
+
+            foreach ($uploadedFiles as $index => $uploadedFile) {
+
+                if (! $uploadedFile instanceof UploadedFile) {
+                    continue;
+                }
+
+                $storedName = Str::uuid() . '.' . $uploadedFile->getClientOriginalExtension();
+                $url = $uploadedFile->storeAs('uploads', $storedName, 'public');
+
+                All_file::create([
+                    'url'         => $url,
+                    'object_id'   => $sarf->id,
+                    'object_name' => 'sarfs',
+                    'title'       => $request->title[$index] ?? 'ملف مرفق',
+                ]);
+            }
 
             // add Notification
             $toUsers = User::get()->where('is_admin', 1);

@@ -1049,17 +1049,17 @@ if($request->has('unit_id') && $request->unit_id!='')
 
         $contract_data['updated_by'] = Auth::id();
         $rupdatePayments = false ;
-        if($contract->total_amount != $request->total_amount
-        || $contract->start_payment_amount != $request->start_payment_amount
-        || $contract->no_of_all_payments != $request->no_of_all_payments
-        || $contract->no_of_payments != $request->no_of_payments
-        || $contract->services_amount != $request->services_amount
-//        || $contract->insurance_amount != $request->insurance_amount
-        || $contract->year_amount != $request->year_amount
-        )
-        {
-            $rupdatePayments = true ;
-        }
+//        if($contract->total_amount != $request->total_amount
+//        || $contract->start_payment_amount != $request->start_payment_amount
+//        || $contract->no_of_all_payments != $request->no_of_all_payments
+//        || $contract->no_of_payments != $request->no_of_payments
+//        || $contract->services_amount != $request->services_amount
+////        || $contract->insurance_amount != $request->insurance_amount
+//        || $contract->year_amount != $request->year_amount
+//        )
+//        {
+//            $rupdatePayments = true ;
+//        }
         if ($contract->update($contract_data)) {
 
             if($rupdatePayments)
