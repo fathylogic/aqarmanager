@@ -105,6 +105,7 @@ class OhdaController extends Controller
                     'emp_id'  => $request->emp_id,
                     'purpose' => $request->purpose,
                     'raseed'  => $request->raseed,
+                    'start_amount'  => $request->raseed,
                     'maincenter_id'  => $request->maincenter_id,
                     'masder'  => $request->masder,
                     'esm_elmohawel'  => $request->esm_elmohawel,

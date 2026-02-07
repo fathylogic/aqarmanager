@@ -28,6 +28,7 @@ class Ohda  extends Model
         'tdateh',
         'payment_type',
         'hewala_no',
+        'start_amount',
 
         'created_at',
         'updated_at'

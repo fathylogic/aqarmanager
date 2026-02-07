@@ -79,10 +79,13 @@
      * صورة مباشرة في جدول sarf
      */
     if ($sarf->img) {
-        $attachments[] = [
-            'type' => 'image',
-            'url' => Storage::url($sarf->img),
-        ];
+         $isPdf = str_ends_with(strtolower($sarf->img), '.pdf');
+
+            $attachments[] = [
+                'type' => $isPdf ? 'pdf' : 'image',
+                'url' => Storage::url($sarf->img),
+            ];
+
     }
 
     /**

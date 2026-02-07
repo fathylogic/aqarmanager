@@ -265,6 +265,8 @@
 
 Carbon::setLocale('ar');
 
+
+
     /**
      * تقسيم العمليات حسب الشهر
      */
@@ -276,6 +278,8 @@ Carbon::setLocale('ar');
      * الرصيد الافتتاحي العام (قبل أول شهر)
      */
     $openingBalance = $selectedOhda->raseed ?? 0;
+     $original_balance =  $selectedOhda->start_amount ;
+  $balance =  $result[0]->last_amount ;
 @endphp
 
 <div class="print-container">
@@ -286,6 +290,14 @@ Carbon::setLocale('ar');
     <div class="no-print" style="text-align: center;">
         <button class="btn-print" onclick="window.print()">طباعة التقرير</button>
         <button class="btn-print" style="background-color: #f44336;" onclick="window.close()">إغلاق</button>
+        <div class="footer">
+            <div class="footer-totals">
+                <div>  الرصيد الافتتاحي للعهدة : {{$original_balance}} ريال</div>
+
+
+            </div>
+        </div>
+
     </div>
 
     @if($groupedByMonth->count() > 0)
@@ -302,14 +314,17 @@ Carbon::setLocale('ar');
 
                 // رصيد افتتاحي الشهر
                 $monthOpeningBalance = $openingBalance;
+
             @endphp
 
                 <!-- Header -->
             <div class="header">
                 <h1><br>
                     تقرير  {{ $selectedOhda->purpose }}
-                    شهر {{ $currentMonthName }}
-                    مع باقي مُرحّل من شهر {{ $previousMonthName }}
+                    لشهر  {{ $currentMonthName }}
+                    @if($currentMonthName !='يناير 2026')
+                    مع   ما تبقى من عهدة شهر {{ $previousMonthName }}
+                    @endif
                 </h1>
             </div>
 
@@ -317,14 +332,16 @@ Carbon::setLocale('ar');
             <table class="report-table">
                 <thead>
                 <tr>
-                    <th>#</th>
+                    <th>التسلسل</th>
                     <th>نوع العملية</th>
-                    <th>الرصيد بعد العملية</th>
                     <th>المبلغ</th>
+                    <th>الرصيد قبل العملية</th>
+
+                    <th>الرصيد بعد العملية</th>
                     <th>التاريخ</th>
                     <th>البيان</th>
                     <th>المستلم</th>
-                    <th>المرفقات</th>
+                    <th class="no-print">المرفقات</th>
 
                 </tr>
                 </thead>
@@ -343,22 +360,29 @@ Carbon::setLocale('ar');
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $operation->op_type == '+' ? 'إضافة' : 'صرف' }}</td>
-                        <td><strong>{{ number_format($operation->last_amount, 2) }}</strong></td>
                         <td style="color: {{ $operation->op_type == '+' ? 'green' : 'red' }}">
                             {{ number_format($operation->amount, 2) }}
+                        </td>
+                        <td><strong>{{ number_format($operation->last_amount, 2) }}</strong></td>
+
+                        <td style="color: {{ $operation->op_type == '+' ? 'green' : 'red' }}">
+                            {{ $operation->op_type == '+' ? number_format($operation->amount + $operation->last_amount, 2) :  number_format($operation->last_amount - $operation->amount , 2) }}
+
                         </td>
                         <td>{{ $operation->sarf->p_date }}</td>
                         <td class="text-right">{{ $operation->sarf->s_desc ?? '-' }}
                         @if($operation->sarf->pay_role_id !='') {{$operation->sarf->receved_by ?? '-'}}@endif
                         </td>
                         <td class="text-right">{{ $operation->sarf->receved_by ?? '-' }}</td>
-                        <td>
+                        <td class="no-print">
+                            @if($operation->sarf->img || $operation->sarf->files->count())
                             <a href="{{ route('sarf.attachments', $operation->sarf->id) }}"
                                target="_blank"
                                class="btn-print"
                                style="font-size:12px;padding:5px 10px;">
                                 عرض المرفقات
                             </a>
+                            @endif
                         </td>
 
                     </tr>
@@ -371,7 +395,10 @@ Carbon::setLocale('ar');
                 <div class="footer-totals">
                     <div>إجمالي الوارد: {{ number_format($total_come, 2) }} ريال</div>
                     <div>إجمالي المنصرف: {{ number_format($total_sarf, 2) }} ريال</div>
-                    <div>الرصيد المرحّل: {{ number_format($openingBalance, 2) }} ريال</div>
+                    @php
+                  $balance   = $balance + $total_come - $total_sarf  ;
+                    @endphp
+                    <div>الرصيد المرحّل: {{ number_format($balance , 2) }} ريال</div>
 
                 </div>
             </div>
