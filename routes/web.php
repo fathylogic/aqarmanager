@@ -223,5 +223,9 @@ Route::get('/delete_file/{id}', function ($id) {
     }
 });
 
+Route::get('/sarf/{sarf}/attachments', function (\App\Models\Sarf $sarf) {
+    return view('reports.sarf_attachments', compact('sarf'));
+})->name('sarf.attachments');
+
 Route::get('/test-send-email', [TestEmailController::class, 'send']);
 

@@ -45,7 +45,7 @@
             display: flex;
             justify-content: space-between;
             margin-top: 10px;
-            font-size: 14px;
+            font-size: 16px;
         }
 
         .header-info div {
@@ -162,146 +162,231 @@
             font-weight: bold;
         }
     </style>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 1cm;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            direction: rtl;
+            text-align: right;
+            background: white;
+        }
+
+        .print-container {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .report-table th,
+        .report-table td {
+            border: 1px solid #333;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .report-table th {
+            background-color: #f0f0f0;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
+        .footer {
+            margin-top: 20px;
+            border-top: 2px solid #333;
+            padding-top: 15px;
+
+        }
+
+        .footer-totals {
+            display: flex;
+            justify-content: space-around;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .footer-totals div {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        .no-print {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
 </head>
+
 <body>
+
+@php
+    use Carbon\Carbon;
+
+Carbon::setLocale('ar');
+
+    /**
+     * تقسيم العمليات حسب الشهر
+     */
+    $groupedByMonth = $result->groupBy(function ($item) {
+        return Carbon::parse($item->sarf->p_date)->format('Y-m');
+    });
+
+    /**
+     * الرصيد الافتتاحي العام (قبل أول شهر)
+     */
+    $openingBalance = $selectedOhda->raseed ?? 0;
+@endphp
+
 <div class="print-container">
+
+
+
     <!-- Print Button -->
     <div class="no-print" style="text-align: center;">
         <button class="btn-print" onclick="window.print()">طباعة التقرير</button>
         <button class="btn-print" style="background-color: #f44336;" onclick="window.close()">إغلاق</button>
     </div>
 
-    <!-- Header -->
-    <div class="header">
-        <h1>تقرير العهدة
+    @if($groupedByMonth->count() > 0)
 
-        ({{$selectedOhda->purpose}})
-        </h1>
-        <div class="header-info">
-            <div>
-                <strong>نوع التقرير:</strong>
-                @if($ohda_filter === 'specific')
-                    عهدة محددة
-                @else
-                    جميع العهد
-                @endif
-            </div>
-            <div>
-                <strong>الفترة:</strong>
-                @if(isset($from_date) && isset($to_date))
-                    من {{ $from_date }} إلى {{ $to_date }}
-                @elseif(isset($from_date))
-                    من {{ $from_date }}
-                @elseif(isset($to_date))
-                    حتى {{ $to_date }}
-                @else
-                    جميع الفترات
-                @endif
-            </div>
-            <div>
-                <strong>تاريخ الطباعة:</strong>
-                {{ date('Y/m/d H:i') }}
-            </div>
-            <div>
-                <strong>المستخدم:</strong>
-                {{ $current_user->name }}
-            </div>
-        </div>
-    </div>
+        @foreach($groupedByMonth as $month => $operations)
 
-    @if($result && $result->count() > 0)
-        <!-- Custody Operations Table -->
-        <table class="report-table">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>رقم العملية</th>
-
-                <th>نوع العملية</th>
-                <th>المبلغ</th>
-                <th>الرصيد</th>
-                <th>التاريخ</th>
-                <th>التاريخ الهجري</th>
-                <th>البيان</th>
-                <th>المستلم</th>
-            </tr>
-            </thead>
-            <tbody>
             @php
+                $monthCarbon = Carbon::createFromFormat('Y-m', $month);
+                $currentMonthName = $monthCarbon->translatedFormat('F Y');
+                $previousMonthName = $monthCarbon->copy()->subMonth()->translatedFormat('F Y');
+
                 $total_sarf = 0;
                 $total_come = 0;
-                $final_last_amount = 0 ;
+
+                // رصيد افتتاحي الشهر
+                $monthOpeningBalance = $openingBalance;
             @endphp
 
-            @foreach($result as $index => $operation)
-                @php
-                if($operation->op_type == '+')
-                     $total_come += $operation->amount ;
-                else
-                     $total_sarf += $operation->amount ;
+                <!-- Header -->
+            <div class="header">
+                <h1><br>
+                    تقرير  {{ $selectedOhda->purpose }}
+                    شهر {{ $currentMonthName }}
+                    مع باقي مُرحّل من شهر {{ $previousMonthName }}
+                </h1>
+            </div>
 
-
-                    $final_last_amount = $operation->last_amount ?? 0;
-                @endphp
+            <!-- Table -->
+            <table class="report-table">
+                <thead>
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $operation->id }}</td>
-                    <td class="text-right">
-                        @if($operation->op_type == '+')
-                            إيداع
-                        @elseif($operation->op_type == '-')
-                            سحب
+                    <th>#</th>
+                    <th>نوع العملية</th>
+                    <th>الرصيد بعد العملية</th>
+                    <th>المبلغ</th>
+                    <th>التاريخ</th>
+                    <th>البيان</th>
+                    <th>المستلم</th>
+                    <th>المرفقات</th>
 
-                        @endif
-                    </td>
-                    <td style="color:  @if($operation->op_type  ==  '+') {{'green' }} @else{{ 'red' }} @endif;">
-                        {{ number_format($operation->amount ?? 0, 2) }}
-                    </td>
-                    <td><strong>{{ number_format($operation->last_amount ?? 0, 2) }}</strong></td>
-                    <td>{{ $operation->created_at ? $operation->created_at->format('Y-m-d') : '-' }}</td>
-                    <td>{{ $operation->created_at ? \Alkoumi\LaravelHijriDate\Hijri::Date('Y-m-d', $operation->created_at->timestamp) : '-' }}</td>
-                    <td class="text-right">{{ $operation->sarf->s_desc ?? $operation->masder }}</td>
-                    <td class="text-right">{{ $operation->sarf->receved_by ?? '-' }}</td>
                 </tr>
-            @endforeach
-            </tbody>
-            <tfoot>
-           
-            </tfoot>
-        </table>
+                </thead>
 
-        <!-- Footer -->
-        <div class="footer">
-            <div class="footer-totals">
-                <div>
-                    <strong>إجمالي المنصرف :</strong>
-                    {{ number_format($total_sarf, 2) }} ريال
-                </div>
-                <div>
-                    <strong>إجمالي الوارد :</strong>
-                    {{ number_format($total_come, 2) }} ريال
-                </div>
-                <div>
-                    <strong>الرصيد الحالي:</strong>
-                    {{ number_format($selectedOhda->raseed, 2) }} ريال
+                <tbody>
+                @foreach($operations as $index => $operation)
+                    @php
+                        if($operation->op_type == '+')
+                            $total_come += $operation->amount;
+                        else
+                            $total_sarf += $operation->amount;
+
+                        $openingBalance = $operation->last_amount ?? $openingBalance;
+                    @endphp
+
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $operation->op_type == '+' ? 'إضافة' : 'صرف' }}</td>
+                        <td><strong>{{ number_format($operation->last_amount, 2) }}</strong></td>
+                        <td style="color: {{ $operation->op_type == '+' ? 'green' : 'red' }}">
+                            {{ number_format($operation->amount, 2) }}
+                        </td>
+                        <td>{{ $operation->sarf->p_date }}</td>
+                        <td class="text-right">{{ $operation->sarf->s_desc ?? '-' }}
+                        @if($operation->sarf->pay_role_id !='') {{$operation->sarf->receved_by ?? '-'}}@endif
+                        </td>
+                        <td class="text-right">{{ $operation->sarf->receved_by ?? '-' }}</td>
+                        <td>
+                            <a href="{{ route('sarf.attachments', $operation->sarf->id) }}"
+                               target="_blank"
+                               class="btn-print"
+                               style="font-size:12px;padding:5px 10px;">
+                                عرض المرفقات
+                            </a>
+                        </td>
+
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+
+            <!-- Footer -->
+            <div class="footer">
+                <div class="footer-totals">
+                    <div>إجمالي الوارد: {{ number_format($total_come, 2) }} ريال</div>
+                    <div>إجمالي المنصرف: {{ number_format($total_sarf, 2) }} ريال</div>
+                    <div>الرصيد المرحّل: {{ number_format($openingBalance, 2) }} ريال</div>
+
                 </div>
             </div>
 
-            <div class="footer-info">
-                <p>عدد العمليات: {{ $result->count() }}</p>
-                <p>تم إنشاء هذا التقرير بواسطة: {{ $current_user->name }} - {{ date('Y/m/d H:i:s') }}</p>
-            </div>
-        </div>
+            @if(!$loop->last)
+                <div class="page-break"></div>
+            @endif
+
+        @endforeach
+
     @else
-        <div style="text-align: center; padding: 50px; font-size: 18px; color: #666;">
-            <p>لا توجد بيانات لعرضها</p>
-        </div>
+        <p style="text-align:center; padding:50px">لا توجد بيانات</p>
     @endif
+
 </div>
 
-<script>
-    // Auto print on load (optional)
-    // window.onload = function() { window.print(); }
-</script>
 </body>
 </html>

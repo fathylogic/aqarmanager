@@ -96,15 +96,33 @@ function payrolls_rpt(Request $request)
         $selectedOhda = null;
 
         if ($request->has('btn_rpt')) {
+
             $filters = $request->only(['from_date', 'to_date', 'ohda_id']);
             $selectedOhda = Ohda::with('employee')->findOrFail($filters['ohda_id']);
 
-            $result = Ohdas_operation::with('ohda' , 'sarf')
+            $normalizedSarfDateSql = "STR_TO_DATE(REPLACE(p_date, '/', '-'), IF(LENGTH(p_date) > 10, '%Y-%m-%d %H:%i:%s', '%Y-%m-%d'))";
+            $fromDateStart = $request->filled('from_date')
+                ? Carbon::parse($filters['from_date'])->startOfDay()->toDateTimeString()
+                : null;
+            $toDateEndOfDay = $request->filled('to_date')
+                ? Carbon::parse($filters['to_date'])->endOfDay()->toDateTimeString()
+                : null;
+
+            $applySarfDateFilter = static function ($query, string $operator, string $boundary, string $normalizedSql): void {
+                $query->whereHas('sarf', fn ($sarfQuery) => $sarfQuery
+                    ->whereRaw("{$normalizedSql} {$operator} ?", [$boundary]));
+            };
+
+            $result = Ohdas_operation::with('ohda', 'sarf.files')
                 ->where('ohda_id', $selectedOhda->id)
-                ->when($request->filled('from_date'), fn ($query) => $query->where('created_at', '>=', $filters['from_date']))
-                ->when($request->filled('to_date'), fn ($query) => $query->where('created_at', '<=', "{$filters['to_date']} 23:59:59"))
-                ->orderBy('created_at')
+                ->when($fromDateStart, fn ($query) => $applySarfDateFilter($query, '>=', $fromDateStart, $normalizedSarfDateSql))
+                ->when($toDateEndOfDay, fn ($query) => $applySarfDateFilter($query, '<=', $toDateEndOfDay, $normalizedSarfDateSql))
+                ->orderBy(
+                    Sarf::selectRaw("{$normalizedSarfDateSql}")
+                        ->whereColumn('sarfs.id', 'ohdas_operations.sarf_id')
+                )
                 ->get();
+
 
            // dd($result) ;
 

@@ -90,6 +90,11 @@ public function paymentType()
         else return '' ;
     }
 
+    function files()
+    {
+        return $this->hasMany(All_file::class, 'object_id')
+            ->where('object_name', 'sarfs');
+    }
 
 
 
