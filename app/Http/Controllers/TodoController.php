@@ -46,6 +46,7 @@ class TodoController extends Controller
     public function update(Request $request, Todo $todo)
     {
         if ($request->has('toggle_status')) {
+
             $todo->update([
                 'is_done' => !$todo->is_done
             ]);

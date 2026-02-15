@@ -124,7 +124,7 @@ function payrolls_rpt(Request $request)
                 ->get();
 
 
-           // dd($result) ;
+           //  dd($result[0]->sarf->paymentType->name) ;
 
             return view('reports.ohda_print', [
                 'current_user' => $current_user,

@@ -96,6 +96,12 @@ public function paymentType()
             ->where('object_name', 'sarfs');
     }
 
+    function serialNo ()
+    {
+        $ser = '(' . str_pad($this->sereal, 4, '0', STR_PAD_LEFT) . ')' .$this->year_m . '-' . $this->year_h;
+        return $ser ;
+    }
+
 
 
 }

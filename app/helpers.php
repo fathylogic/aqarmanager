@@ -39,7 +39,7 @@ function formatPaymentDiff($date)
         return 'اليوم';
     }
 
-    $prefix = $diffDays > 0 ? 'باقي' : 'فات عليه';
+    $prefix = $diffDays > 0 ? 'باقي' : 'مضى عليه';
     $days = abs($diffDays);
 
     if ($days < 7) {

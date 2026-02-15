@@ -313,8 +313,7 @@ class SarfController extends Controller
         }
 
         if ($request->has('object_name') && $request->has('object_id') && $request->object_id > 0 && $request->object_name != '') {
-            return redirect()->route($request->object_name . '.show', $request->object_id)
-                ->with('success', '     تم      بنجاح');
+            return redirect()->back()->with('success', '     تم      بنجاح');
         }
         return redirect()->route('sarfs.index')
             ->with('success', '     تم الاضافة  بنجاح');

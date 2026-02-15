@@ -233,7 +233,7 @@ class PaymentController extends Controller
                         $n_date['element_id'] = $payment->id;
                         Notification::create($n_date);
                     }
-                    return redirect()->route('payments.index')->with('success', '     تم    بنجاح');
+                    return redirect()->back()->with('success', '     تم    بنجاح');
                 }
             }
         }

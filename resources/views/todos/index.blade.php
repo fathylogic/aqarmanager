@@ -45,7 +45,7 @@
                             <td>
                                 <form method="POST" action="{{ route('todos.update', $todo) }}">
                                     @csrf @method('PATCH')
-                                    <button class="btn btn-sm {{ $todo->is_done ? 'btn-success' : 'btn-warning' }}">
+                                    <button name="toggle_status" class="btn btn-sm {{ $todo->is_done ? 'btn-success' : 'btn-warning' }}">
                                         {{ $todo->is_done ? '✔ منتهية' : '⏳ قيد التنفيذ' }}
                                     </button>
                                 </form>

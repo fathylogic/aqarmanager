@@ -32,6 +32,7 @@
                                     <div
                                         class="col-md-2 border rounded text-center fw-bold bg-light float-start p-1 me-1 mb-1 h-100">
                                         يصرف من
+                                        <i class="fa fa-asterisk " style="color: red" aria-hidden="true"></i>
 
                                     </div>
                                     <div class="col-md-9 border rounded float-start p-1 me-1 mb-1 h-100">
@@ -43,7 +44,7 @@
                                         </div>
                                         <div class="form-check form-check-inline col-md-6 ohdafrom" >
 
-                                            <select id="from_ohda_id" name="from_ohda_id"
+                                            <select id="from_ohda_id" required name="from_ohda_id"
                                                 class="select2 form-select w-100 ohdafrom" data-allow-clear="true">
                                                 <option value="">اختر </option>
                                                 @foreach ($ohdas as $row)
@@ -65,7 +66,10 @@
                                     {{-- خدمات --}}
                                      <div class="row m-2">
                                      <div class="col-md-4">
-                                            <label class="form-label" for="service_type_id">  نوع الخدمة </label>
+                                            <label class="form-label" for="service_type_id">
+                                                نوع الخدمة
+                                                <i class="fa fa-asterisk " style="color: red" aria-hidden="true"></i>
+                                            </label>
 
                                             <select id="service_type_id"  required name="service_type_id"
                                                 class="select2 form-select" data-allow-clear="true">
@@ -112,7 +116,9 @@
                                     <div class="row mb-2 m-2" >
 
                                         <div class="col-md-4">
-                                            <label class="form-label" for="amount"> المبلغ </label>
+                                            <label class="form-label" for="amount"> المبلغ
+                                                <i class="fa fa-asterisk " style="color: red" aria-hidden="true"></i>
+                                            </label>
                                             <input type="text" id="amount" name="amount" required
                                                 class="form-control" />
                                         </div>
@@ -131,7 +137,9 @@
 
 
                                         <div class="col-md-4">
-                                            <label class="form-label" for="payment_type"> طريقة الدفع </label>
+                                            <label class="form-label" for="payment_type"> طريقة الدفع
+                                                <i class="fa fa-asterisk " style="color: red" aria-hidden="true"></i>
+                                            </label>
 
                                             <select id="payment_type" required name="payment_type"
                                                 class="select2 form-select" data-allow-clear="true">
@@ -146,13 +154,17 @@
                                         </div>
 
                                         <div class="col-md-12">
-                                            <label class="form-label" for="s_desc"> البيان </label>
+                                            <label class="form-label" for="s_desc"> البيان
+                                                <i class="fa fa-asterisk " style="color: red" aria-hidden="true"></i>
+                                            </label>
                                             <input type="text" id="s_desc" name="s_desc" value="" required
                                                 class="form-control">
 
                                         </div>
                                         <div class="col-md-12">
-                                            <label class="form-label" for="receved_by"> المستلم </label>
+                                            <label class="form-label" for="receved_by"> المستلم
+                                                <i class="fa fa-asterisk " style="color: red" aria-hidden="true"></i>
+                                            </label>
                                             <input type="text" id="receved_by" name="receved_by" value="" required
                                                 class="form-control">
 

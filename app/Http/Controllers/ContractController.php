@@ -54,8 +54,53 @@ class ContractController extends Controller
     {
 
 
-        $contracts = Contract::with(self::INDEX_RELATIONS)
-            ->whereDate('end_date', '>=', Carbon::today())
+        $query = Contract::with(self::INDEX_RELATIONS)
+            ->whereDate('end_date', '>=', Carbon::today());
+
+        if ($request->filled('period_filter')) {
+
+            switch ($request->period_filter) {
+
+                // أقل من سنة
+                case 'lt1':
+                    $query->whereRaw("
+                TIMESTAMPDIFF(MONTH, start_date, DATE_ADD(end_date, INTERVAL 1 DAY)) < 12
+            ");
+                    break;
+
+                // سنة كاملة
+                case '1y':
+                    $query->whereRaw("
+                TIMESTAMPDIFF(MONTH, start_date, DATE_ADD(end_date, INTERVAL 1 DAY)) = 12
+            ");
+                    break;
+
+                // أكثر من سنة وأقل من سنتين
+                case '1to2':
+                    $query->whereRaw("
+                TIMESTAMPDIFF(MONTH, start_date, DATE_ADD(end_date, INTERVAL 1 DAY)) > 12
+                AND
+                TIMESTAMPDIFF(MONTH, start_date, DATE_ADD(end_date, INTERVAL 1 DAY)) < 24
+            ");
+                    break;
+
+                // سنتين كاملتين
+                case '2y':
+                    $query->whereRaw("
+                TIMESTAMPDIFF(MONTH, start_date, DATE_ADD(end_date, INTERVAL 1 DAY)) = 24
+            ");
+                    break;
+
+                // أكثر من سنتين
+                case 'gt2':
+                    $query->whereRaw("
+                TIMESTAMPDIFF(MONTH, start_date, DATE_ADD(end_date, INTERVAL 1 DAY)) > 24
+            ");
+                    break;
+            }
+        }
+
+        $contracts = $query
             ->orderByDesc('id')
             ->get();
         $current_user = User::find(Auth::user()->id);

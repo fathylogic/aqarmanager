@@ -3,8 +3,8 @@
 @section('content')
 
 
-   
-        
+
+
     <?php $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST']; ?>
     <form method="POST" action="{{ route('employees.store') }}" enctype="multipart/form-data">
         @csrf
@@ -17,8 +17,9 @@
 
                             <div class="row g-3">
                                 <div class="col-md-4">
-                                    <label class="form-label" for="name">الاسم <i class="fa fa-asterisk "
-                                            style="color: red" aria-hidden="true"></i></label>
+                                    <label class="form-label" for="name">الاسم
+                                        <i class="fa fa-asterisk " style="color: red" aria-hidden="true"></i>
+                                    </label>
                                     <input type="text" id="name" name="name" class="form-control" required />
                                 </div>
                                 <div class="col-md-4">
@@ -326,7 +327,7 @@
                 $('#uint_div').hide();
 
         }
-     
-      
+
+
     </script>
 @endsection

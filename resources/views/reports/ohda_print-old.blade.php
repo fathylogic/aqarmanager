@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تقرير حركة  العهدة</title>
+    <title>تقرير العهدة</title>
     <style>
         @page {
             size: A4 landscape;
@@ -280,7 +280,6 @@ Carbon::setLocale('ar');
     $openingBalance = $selectedOhda->raseed ?? 0;
      $original_balance =  $selectedOhda->start_amount ;
   $balance =  $result[0]->last_amount ;
-
 @endphp
 
 <div class="print-container">
@@ -291,13 +290,13 @@ Carbon::setLocale('ar');
     <div class="no-print" style="text-align: center;">
         <button class="btn-print" onclick="window.print()">طباعة التقرير</button>
         <button class="btn-print" style="background-color: #f44336;" onclick="window.close()">إغلاق</button>
-{{--        <div class="footer">--}}
-{{--            <div class="footer-totals">--}}
-{{--                <div>  الرصيد الافتتاحي للعهدة : {{$original_balance}} ريال</div>--}}
+        <div class="footer">
+            <div class="footer-totals">
+                <div>  الرصيد الافتتاحي للعهدة : {{$original_balance}} ريال</div>
 
 
-{{--            </div>--}}
-{{--        </div>--}}
+            </div>
+        </div>
 
     </div>
 
@@ -321,7 +320,7 @@ Carbon::setLocale('ar');
                 <!-- Header -->
             <div class="header">
                 <h1><br>
-                    تقرير حركة   {{ $selectedOhda->purpose }}
+                    تقرير  {{ $selectedOhda->purpose }}
                     لشهر  {{ $currentMonthName }}
                     @if($currentMonthName !='يناير 2026')
                     مع   ما تبقى من عهدة شهر {{ $previousMonthName }}
@@ -334,14 +333,13 @@ Carbon::setLocale('ar');
                 <thead>
                 <tr>
                     <th>التسلسل</th>
-                    <th>المبلغ الوارد</th>
-                    <th>المبلغ المنصرف  </th>
+                    <th>نوع العملية</th>
+                    <th>المبلغ</th>
+                    <th>الرصيد قبل العملية</th>
 
-                    <th>  البيان</th>
-
-                    <th> نوع المستند</th>
-                    <th>رقم المستند</th>
-                    <th>تاريخ المستند</th>
+                    <th>الرصيد بعد العملية</th>
+                    <th>التاريخ</th>
+                    <th>البيان</th>
                     <th>المستلم</th>
                     <th class="no-print">المرفقات</th>
 
@@ -361,21 +359,19 @@ Carbon::setLocale('ar');
 
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td style="color:green">{{ $operation->op_type == '+' ? number_format($operation->amount, 2) : '' }}</td>
-                        <td style="color:red">
-                            {{ $operation->op_type == '-' ? number_format($operation->amount, 2) : '' }}
+                        <td>{{ $operation->op_type == '+' ? 'إضافة' : 'صرف' }}</td>
+                        <td style="color: {{ $operation->op_type == '+' ? 'green' : 'red' }}">
+                            {{ number_format($operation->amount, 2) }}
                         </td>
-                        <td>{{ $operation->sarf->s_desc ?? '-' }}
-                            @if($operation->sarf->pay_role_id !='') {{$operation->sarf->receved_by ?? '-'}}@endif
-                        </td>
+                        <td><strong>{{ number_format($operation->last_amount, 2) }}</strong></td>
 
-                        <td >
-
-                            {{$operation->sarf->paymentType->name }}
+                        <td style="color: {{ $operation->op_type == '+' ? 'green' : 'red' }}">
+                            {{ $operation->op_type == '+' ? number_format($operation->amount + $operation->last_amount, 2) :  number_format($operation->last_amount - $operation->amount , 2) }}
 
                         </td>
-                        <td nowrap >{{ $operation->sarf->serialNo() }}</td>
-                        <td  nowrap>{{ str_replace('-','/',$operation->sarf->p_date) }}
+                        <td>{{ $operation->sarf->p_date }}</td>
+                        <td class="text-right">{{ $operation->sarf->s_desc ?? '-' }}
+                        @if($operation->sarf->pay_role_id !='') {{$operation->sarf->receved_by ?? '-'}}@endif
                         </td>
                         <td class="text-right">{{ $operation->sarf->receved_by ?? '-' }}</td>
                         <td class="no-print">
@@ -392,24 +388,20 @@ Carbon::setLocale('ar');
                     </tr>
                 @endforeach
                 </tbody>
-                <tfoot>
-                <th></th>
-                <th>{{ number_format($total_come, 2) }}</th>
-                <th>{{ number_format($total_sarf, 2) }}</th>
-                <th nowrap>صافي المبلغ المتبقي والمرحل للعهدة التالية </th>
-                <th colspan="4">
-                    @php
-                        $balance   = $balance + $total_come - $total_sarf  ;
-                    @endphp
-                    {{ number_format($balance , 2) }}
-                    ريال
-                </th>
-                <th class="no-print"></th>
-                </tfoot>
             </table>
 
+            <!-- Footer -->
+            <div class="footer">
+                <div class="footer-totals">
+                    <div>إجمالي الوارد: {{ number_format($total_come, 2) }} ريال</div>
+                    <div>إجمالي المنصرف: {{ number_format($total_sarf, 2) }} ريال</div>
+                    @php
+                  $balance   = $balance + $total_come - $total_sarf  ;
+                    @endphp
+                    <div>الرصيد المرحّل: {{ number_format($balance , 2) }} ريال</div>
 
-
+                </div>
+            </div>
 
             @if(!$loop->last)
                 <div class="page-break"></div>
